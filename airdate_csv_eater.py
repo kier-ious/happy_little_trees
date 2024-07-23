@@ -6,7 +6,7 @@ from datetime import datetime
 DB_HOST = 'localhost'
 DB_PORT = '5432'
 DB_NAME = 'joys_of_coding'
-DB_USER = 'kier'
+DB_USER = 'kiermcalister'
 DB_PASS = 'root'
 
 # Connect to the PostgreSQL database
@@ -23,16 +23,15 @@ cur = conn.cursor()
 with open('airdate.csv', 'r') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
-        print(row)  # Print each row to verify correct data
-        date_str = row['Date'].strip()  # Strip any extra spaces
+        # Print each row to verify correct data
+        print(f"Processing row: {row}")
 
-        # Add default year if missing
-        if ',' not in date_str:
-            date_str += ', 1983'
+        date_str = row['Date'].strip()  # Date is now in MM-DD-YYYY format
 
         # Convert the date to the correct format
         try:
-            date_obj = datetime.strptime(date_str, '%B %d, %Y').date()
+            date_obj = datetime.strptime(date_str, '%m-%d-%Y').date()
+            print(f"Parsed date: {date_obj}")  # Debugging date parsing
         except ValueError as e:
             print(f"Date parsing error for '{date_str}': {e}")
             continue
@@ -43,8 +42,12 @@ with open('airdate.csv', 'r') as csvfile:
             INSERT INTO airdate (painting_title, original_broadcast_date)
             VALUES (%s, %s)
             """, (row['Title'], date_obj))
+            print(f"Inserted row: {row['Title']}, {date_obj}")  # Debug insert
         except psycopg2.Error as e:
-            print(f"Database insertion error: {e}")
+            print(
+                f"Database insertion error for '{row['Title']}':\
+                    {e.pgcode} - {e.pgerror}")
+            conn.rollback()  # Rollback the transaction on error
             continue
 
 # Commit changes and close the connection
