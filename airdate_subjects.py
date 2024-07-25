@@ -29,9 +29,11 @@ with open('airdate.csv', 'r') as airdate_file:
         # Fetch episode_id from airdate table
         cur.execute("""
             SELECT episode_id FROM airdate
-            WHERE painting_title = %s AND original_broadcast_date = %s
+            WHERE LOWER(painting_title) = LOWER(%s) AND
+                    original_broadcast_date = %s
         """, (title, date))
         episode_id = cur.fetchone()
+        print(episode_id)
 
         if episode_id:
             episode_id = episode_id[0]
@@ -63,10 +65,10 @@ with open('airdate.csv', 'r') as airdate_file:
                                     # Insert into the junction table
                                     cur.execute("""
                                         INSERT INTO airdate_subjects
-                                        (episode_id, subject_matter_id)
+                                        (episode_id, subject_id)
                                         VALUES (%s, %s)
                                         ON CONFLICT\
-                                                (episode_id, subject_matter_id)
+                                                (episode_id, subject_id)
                                         DO NOTHING
                                     """, (episode_id, subject_matter_id))
                                 else:
