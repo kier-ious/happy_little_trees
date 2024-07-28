@@ -1,9 +1,9 @@
 const express = require('express');
 const { Pool } = require('pg');
-var bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 
 const app = express();
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 const port = process.env.PORT || 3000;
 
 const pool = new Pool({
@@ -14,9 +14,20 @@ const pool = new Pool({
   port: 5432,
 });
 
+// Helper function to execute queries
+const executeQuery = async (query, values) => {
+  try {
+    const result = await pool.query(query, values);
+    return result.rows;
+  } catch (error) {
+    console.error('Error executing query', error.stack);
+    throw error;
+  }
+};
+
 // Route to fetch airdate data
-app.get('/airdate', (req, res) => {
-  const month = req.query.month; 
+app.get('/airdate', async (req, res) => {
+  const month = req.query.month;
 
   let query = 'SELECT * FROM airdate';
   let values = [];
@@ -26,17 +37,16 @@ app.get('/airdate', (req, res) => {
     values.push(month);
   }
 
-  pool.query(query, values, (error, results) => {
-    if (error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.json(results.rows);
-    }
-  });
+  try {
+    const rows = await executeQuery(query, values);
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // Route to fetch subject matters
-app.get('/subject_matters', (req, res) => {
+app.get('/subject_matters', async (req, res) => {
   const subjectName = req.query.subject_name;
 
   let query = 'SELECT * FROM subject_matters';
@@ -47,28 +57,16 @@ app.get('/subject_matters', (req, res) => {
     values.push(subjectName);
   }
 
-  pool.query(query, values, (error, results) => {
-    if (error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.json(results.rows);
-    }
-  });
-});
-
-app.get('/colors', (req, res) => {
-  pool.query('SELECT * FROM colors', (error, results) => {
-    if (error) {
-      console.error('Error executing query', error.stack);
-      res.status(500).send('Error fetching data');
-    } else {
-      res.json(results.rows);
-    }
-  });
+  try {
+    const rows = await executeQuery(query, values);
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // Route to fetch colors
-app.get('/colors', (req, res) => {
+app.get('/colors', async (req, res) => {
   const colorName = req.query.color_name;
 
   let query = 'SELECT * FROM colors';
@@ -79,17 +77,16 @@ app.get('/colors', (req, res) => {
     values.push(colorName);
   }
 
-  pool.query(query, values, (error, results) => {
-    if (error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.json(results.rows);
-    }
-  });
+  try {
+    const rows = await executeQuery(query, values);
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
-// Route to fetch airdate_subjects with query parameters
-app.get('/airdate_subjects', (req, res) => {
+// Route to fetch airdate_subjects
+app.get('/airdate_subjects', async (req, res) => {
   const episodeId = req.query.episode_id;
   const subjectId = req.query.subject_id;
 
@@ -111,14 +108,74 @@ app.get('/airdate_subjects', (req, res) => {
     query += ' WHERE ' + conditions.join(' AND ');
   }
 
-  pool.query(query, values, (error, results) => {
-    if (error) {
-      console.error('Error executing query', error.stack);
-      res.status(500).send('Error fetching data');
-    } else {
-      res.json(results.rows);
-    }
-  });
+  try {
+    const rows = await executeQuery(query, values);
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Route to fetch airdate_colors
+app.get('/airdate_colors', async (req, res) => {
+  const episodeId = req.query.episode_id;
+  const colorId = req.query.color_id;
+
+  let query = 'SELECT * FROM airdate_colors';
+  let values = [];
+  let conditions = [];
+
+  if (episodeId) {
+    conditions.push('episode_id = $' + (conditions.length + 1));
+    values.push(episodeId);
+  }
+
+  if (colorId) {
+    conditions.push('color_id = $' + (conditions.length + 1));
+    values.push(colorId);
+  }
+
+  if (conditions.length > 0) {
+    query += ' WHERE ' + conditions.join(' AND ');
+  }
+
+  try {
+    const rows = await executeQuery(query, values);
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Route to fetch subject_colors
+app.get('/subject_colors', async (req, res) => {
+  const subjectId = req.query.subject_id;
+  const colorId = req.query.color_id;
+
+  let query = 'SELECT * FROM subject_colors';
+  let values = [];
+  let conditions = [];
+
+  if (subjectId) {
+    conditions.push('subject_id = $' + (conditions.length + 1));
+    values.push(subjectId);
+  }
+
+  if (colorId) {
+    conditions.push('color_id = $' + (conditions.length + 1));
+    values.push(colorId);
+  }
+
+  if (conditions.length > 0) {
+    query += ' WHERE ' + conditions.join(' AND ');
+  }
+
+  try {
+    const rows = await executeQuery(query, values);
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 app.listen(port, () => {

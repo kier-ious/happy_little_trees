@@ -28,3 +28,11 @@ CREATE TABLE subject_title_mapping (
     subject_matter_id INT REFERENCES subject_matters(subject_matter_id),
     PRIMARY KEY (subject_id, subject_matter_id)
 );
+
+CREATE TABLE subject_colors (
+    id SERIAL PRIMARY KEY,
+    subject_id INT NOT NULL,
+    color_id INT NOT NULL,
+    FOREIGN KEY (subject_id) REFERENCES subject_matters(subject_matter_id),
+    FOREIGN KEY (color_id) REFERENCES colors(color_id)
+);
