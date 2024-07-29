@@ -23,12 +23,6 @@ CREATE TABLE airdate_colors (
     PRIMARY KEY (episode_id, color_id)
 );
 
-CREATE TABLE subject_title_mapping (
-    subject_id INT REFERENCES painting_title(subject_id),
-    subject_matter_id INT REFERENCES subject_matters(subject_matter_id),
-    PRIMARY KEY (subject_id, subject_matter_id)
-);
-
 CREATE TABLE subject_colors (
     id SERIAL PRIMARY KEY,
     subject_id INT NOT NULL,

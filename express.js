@@ -88,28 +88,34 @@ app.get('/colors', async (req, res) => {
 // Route to fetch airdate_subjects
 app.get('/airdate_subjects', async (req, res) => {
   const episodeId = req.query.episode_id;
-  const subjectId = req.query.subject_id;
+  const subjectName = req.query.subject_name;
 
-  let query = 'SELECT * FROM airdate_subjects';
+  let query = "SELECT * FROM airdate_subjects "+
+              "JOIN airdate "+
+              "ON airdate_subjects.episode_id = airdate.episode_id "+
+              "JOIN subject_matters "+
+              "ON airdate_subjects.subject_id = subject_matters.subject_matter_id "+
+              "WHERE subject_matter_name LIKE '%" + subjectName + '%\'';
   let values = [];
+  values.push(subjectName)
   let conditions = [];
 
-  if (episodeId) {
-    conditions.push('episode_id = $' + (conditions.length + 1));
-    values.push(episodeId);
-  }
+  // if (episodeId) {
+  //   conditions.push('episode_id = $' + (conditions.length + 1));
+  //   values.push(episodeId);
+  // }
 
-  if (subjectId) {
-    conditions.push('subject_id = $' + (conditions.length + 1));
-    values.push(subjectId);
-  }
+  // if (subjectId) {
+  //   conditions.push('subject_id = $' + (conditions.length + 1));
+  //   values.push(subjectId);
+  // }
 
-  if (conditions.length > 0) {
-    query += ' WHERE ' + conditions.join(' AND ');
-  }
+  // if (conditions.length > 0) {
+  //   query += ' WHERE ' + conditions.join(' AND ');
+  // }
 
   try {
-    const rows = await executeQuery(query, values);
+    const rows = await executeQuery(query);
     res.json(rows);
   } catch (error) {
     res.status(500).json({ error: error.message });

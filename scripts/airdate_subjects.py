@@ -19,7 +19,7 @@ conn = psycopg2.connect(
 cur = conn.cursor()
 
 # Process 'airdate.csv'
-with open('airdate.csv', 'r') as airdate_file:
+with open('data/airdate.csv', 'r') as airdate_file:
     reader = csv.DictReader(airdate_file)
 
     for row in reader:
@@ -39,7 +39,7 @@ with open('airdate.csv', 'r') as airdate_file:
             episode_id = episode_id[0]
 
             # Process subject matters for the current episode
-            with open('subjects.csv', 'r') as subjects_file:
+            with open('data/subjects.csv', 'r') as subjects_file:
                 subjects_reader = csv.DictReader(subjects_file)
 
                 for subjects_row in subjects_reader:
