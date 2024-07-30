@@ -127,17 +127,22 @@ app.get('/airdate_colors', async (req, res) => {
   const episodeId = req.query.episode_id;
   const colorId = req.query.color_id;
 
-  let query = 'SELECT * FROM airdate_colors';
+  let query = `
+    SELECT ac.episode_id, ac.color_id, a.painting_title, c.color_name
+    FROM airdate_colors ac
+    INNER JOIN airdate a ON ac.episode_id = a.episode_id
+    INNER JOIN colors c ON ac.color_id = c.color_id
+  `;
   let values = [];
   let conditions = [];
 
   if (episodeId) {
-    conditions.push('episode_id = $' + (conditions.length + 1));
+    conditions.push('ac.episode_id = $' + (conditions.length + 1));
     values.push(episodeId);
   }
 
   if (colorId) {
-    conditions.push('color_id = $' + (conditions.length + 1));
+    conditions.push('ac.color_id = $' + (conditions.length + 1));
     values.push(colorId);
   }
 
