@@ -95,7 +95,7 @@ app.get('/airdate_subjects', async (req, res) => {
               "ON airdate_subjects.episode_id = airdate.episode_id "+
               "JOIN subject_matters "+
               "ON airdate_subjects.subject_id = subject_matters.subject_matter_id "+
-              "WHERE subject_matter_name LIKE '%" + subjectName + '%\'';
+              "WHERE subject_matter_name LIKE $1";
   let values = [];
   values.push(subjectName)
   let conditions = [];
@@ -115,7 +115,7 @@ app.get('/airdate_subjects', async (req, res) => {
   // }
 
   try {
-    const rows = await executeQuery(query);
+    const rows = await executeQuery(query, values);
     res.json(rows);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -125,33 +125,34 @@ app.get('/airdate_subjects', async (req, res) => {
 // Route to fetch airdate_colors
 app.get('/airdate_colors', async (req, res) => {
   const episodeId = req.query.episode_id;
-  const colorId = req.query.color_id;
+  const colorId = req.query.colors;
 
-  let query = `
-    SELECT ac.episode_id, ac.color_id, a.painting_title, c.color_name
-    FROM airdate_colors ac
-    INNER JOIN airdate a ON ac.episode_id = a.episode_id
-    INNER JOIN colors c ON ac.color_id = c.color_id
+  let query1 = `
+    SELECT episode_colors.episode_id, episode_colors.colors, airdate.painting_title
+    FROM episode_colors
+    INNER JOIN airdate ON episode_colors.episode_id = airdate.episode_id
+    WHERE episode_colors.colors LIKE $1
   `;
   let values = [];
+  values.push(colorId)
   let conditions = [];
 
   if (episodeId) {
-    conditions.push('ac.episode_id = $' + (conditions.length + 1));
+    conditions.push('episode_colors.episode_id = $' + (conditions.length + 1));
     values.push(episodeId);
   }
 
-  if (colorId) {
-    conditions.push('ac.color_id = $' + (conditions.length + 1));
-    values.push(colorId);
-  }
+  // if (colorId) {
+  //   conditions.push("episode_colors.colors LIKE '%$1%'");
+  //   values.push(colorId);
+  // }
 
-  if (conditions.length > 0) {
-    query += ' WHERE ' + conditions.join(' AND ');
-  }
+  // if (conditions.length > 0) {
+  //   query += ' WHERE ' + conditions.join(' AND ');
+  // }
 
   try {
-    const rows = await executeQuery(query, values);
+    const rows = await executeQuery(query1, values);
     res.json(rows);
   } catch (error) {
     res.status(500).json({ error: error.message });
