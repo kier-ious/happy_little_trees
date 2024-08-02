@@ -1,10 +1,12 @@
 const express = require('express');
 const { Pool } = require('pg');
 const bodyParser = require('body-parser');
+var cors = require('cors')
 
 const app = express();
 app.use(bodyParser.json());
-const port = process.env.PORT || 3000;
+app.use(cors())
+const port = process.env.PORT || 9000;
 
 const pool = new Pool({
   user: 'kiermcalister',

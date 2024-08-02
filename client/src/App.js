@@ -1,5 +1,5 @@
 import React from 'react';
-import AirdateComponent from '.components/AirdateComponent';
+import AirdateComponent from './components/AirdateComponent';
 
 const App = () => {
     return (
