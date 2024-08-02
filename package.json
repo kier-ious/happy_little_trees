@@ -1,0 +1,13 @@
+{
+  "name": "happy_little_trees",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "concurrently \"npm run start-client\" \"npm run start-api\"",
+    "start-client": "npm start --prefix client",
+    "start-api": "npm start --prefix api"
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  }
+}
