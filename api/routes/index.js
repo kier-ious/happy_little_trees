@@ -1,9 +1,16 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const Paintings = require('../models/Painting');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+// GET all paintings
+router.get('/airdates', async (req, res) => {
+  try {
+    const paintings = await Paintings.find({});
+    res.json(paintings);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
+// Add more routes later !!!!!
 module.exports = router;
