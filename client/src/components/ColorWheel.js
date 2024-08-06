@@ -42,8 +42,26 @@ const ColorWheel = () => {
   };
 
   useEffect(() => {
-    // Equivalent to jQuery.wheelmenu setup can be done here if necessary
-    // Using a library or custom implementation for the wheel menu
+    window.$(".wheel-button").wheelmenu({
+        trigger: "hover",
+        Animation: "fly",
+        AnimationSpeed: "fast",
+        angle: "all"
+    });
+
+    window.$(".wheel .item").hover(function() {
+        var colorName = window.$(this).data("color");
+        var $colorNameDisplay = window.$("#color-name-display");
+
+        $colorNameDisplay.text(colorName)
+            .show()
+            .css({
+                "top": window.$("#wheel-container").offset().top + window.$("#wheel-container").height() / 2 - $colorNameDisplay.height() / 2, // Center vertically relative to the wheel
+                "left": window.$("#wheel-container").offset().left + window.$("#wheel-container").width() + 20 // Fixed position to the right of the wheel container
+            });
+    }, function() {
+        window.$("#color-name-display").hide();
+    });
   }, []);
 
   return (
