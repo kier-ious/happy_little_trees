@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import AirdateComponent from './components/AirdateComponent';
 import PaintingDetail from './components/PaintingDetail';
+import ColorWheel from './components/ColorWheel';
 
 const App = () => {
     return (
@@ -12,6 +13,7 @@ const App = () => {
                     <Routes>
                         <Route path="/" element={<AirdateComponent />} />
                         <Route path="/painting/:id" element={<PaintingDetail />} />
+                        <Route path="/colorwheel" element={<ColorWheel />} />
                     </Routes>
                 </header>
             </div>
