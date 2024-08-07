@@ -5,10 +5,10 @@ const app = require('../server');
 // Connect to MongoDB before running tests
 beforeAll(async () => {
     await mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-  });
-  console.log('Connected to MongoDB');
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    });
+    console.log('Connected to MongoDB');
 });
 
 // Close the MongoDB connection after tests are complete

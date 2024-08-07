@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node start.js",
+    "start": "nodemon server.js",
     "test": "jest --detectOpenHandles"
   },
   "dependencies": {
