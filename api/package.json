@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node server.js"
+    "start": "node start.js",
+    "test": "jest --detectOpenHandles"
   },
   "dependencies": {
     "body-parser": "^1.20.2",
@@ -15,6 +16,13 @@
     "nodemon": "^3.1.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.0"
+    "react-router-dom": "^6.26.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "winston": "^3.13.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
   }
 }

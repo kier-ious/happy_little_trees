@@ -9,7 +9,7 @@ const App = () => {
         <Router>
             <div className="App">
                 <header className="App-header">
-                    <h1>Hello nerds</h1>
+                    <h1>The Joys of Nostalgia</h1>
                     <Routes>
                         <Route path="/" element={<AirdateComponent />} />
                         <Route path="/painting/:id" element={<PaintingDetail />} />
