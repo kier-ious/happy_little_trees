@@ -32,7 +32,6 @@ const PaintingDetail = () => {
                     <p>Season: {painting.season}</p>
                     <p>Episode: {painting.episode}</p>
                     <p>Colors: {painting.colors.join(', ')}</p>
-                    <p>Color Hexes: {painting.color_hex.join(', ')}</p>
                     <p>YouTube: <a href={painting.youtube_src}>Watch</a></p>
                     <p>Date: {painting.Month}/{painting.Day}/{painting.Year}</p>
                 </div>

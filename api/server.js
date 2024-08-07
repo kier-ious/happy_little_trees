@@ -8,7 +8,6 @@ const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const winston = require('winston');
 
-
 // Logger setup
 const logger = winston.createLogger({
     level: 'info',
@@ -71,7 +70,7 @@ const swaggerOptions = {
         },
         servers: [
             {
-                url: 'http://localhost:5000',
+                url: 'mongodb://localhost:27017',
             },
         ],
         components: {
@@ -79,107 +78,108 @@ const swaggerOptions = {
                 Painting: {
                     type: 'object',
                     properties: {
-                        painting_title: { type: 'string' },
+                        _id: { type: 'string', format: 'uuid' },
+                        paintingTitle: { type: 'string' },
                         season: { type: 'string' },
                         id: { type: 'string' },
-                        painting_index: { type: 'string' },
-                        img_src: { type: 'string' },
+                        paintingIndex: { type: 'string' },
+                        imgSrc: { type: 'string' },
                         episode: { type: 'string' },
-                        num_colors: { type: 'string' },
-                        youtube_src: { type: 'string' },
+                        numColors: { type: 'number' },
+                        youtubeSrc: { type: 'string' },
                         colors: { type: 'array', items: { type: 'string' } },
-                        color_hex: { type: 'array', items: { type: 'string' } },
-                        Black_Gesso: { type: 'string' },
-                        Bright_Red: { type: 'string' },
-                        Burnt_Umber: { type: 'string' },
-                        Cadmium_Yellow: { type: 'string' },
-                        Dark_Sienna: { type: 'string' },
-                        Indian_Red: { type: 'string' },
-                        Indian_Yellow: { type: 'string' },
-                        Liquid_Black: { type: 'string' },
-                        Liquid_Clear: { type: 'string' },
-                        Midnight_Black: { type: 'string' },
-                        Phthalo_Blue: { type: 'string' },
-                        Phthalo_Green: { type: 'string' },
-                        Prussian_Blue: { type: 'string' },
-                        Sap_Green: { type: 'string' },
-                        Titanium_White: { type: 'string' },
-                        Van_Dyke_Brown: { type: 'string' },
-                        Yellow_Ochre: { type: 'string' },
-                        Alizarin_Crimson: { type: 'string' },
+                        colorHex: { type: 'array', items: { type: 'string' } },
+                        BlackGesso: { type: 'boolean' },
+                        BrightRed: { type: 'boolean' },
+                        BurntUmber: { type: 'boolean' },
+                        CadmiumYellow: { type: 'boolean' },
+                        DarkSienna: { type: 'boolean' },
+                        IndianRed: { type: 'boolean' },
+                        IndianYellow: { type: 'boolean' },
+                        LiquidBlack: { type: 'boolean' },
+                        LiquidClear: { type: 'boolean' },
+                        MidnightBlack: { type: 'boolean' },
+                        PhthaloBlue: { type: 'boolean' },
+                        PhthaloGreen: { type: 'boolean' },
+                        PrussianBlue: { type: 'boolean' },
+                        SapGreen: { type: 'boolean' },
+                        TitaniumWhite: { type: 'boolean' },
+                        VanDykeBrown: { type: 'boolean' },
+                        YellowOchre: { type: 'boolean' },
+                        AlizarinCrimson: { type: 'boolean' },
                         EPISODE: { type: 'string' },
                         TITLE: { type: 'string' },
-                        APPLE_FRAME: { type: 'string' },
-                        AURORA_BOREALIS: { type: 'string' },
-                        BARN: { type: 'string' },
-                        BEACH: { type: 'string' },
-                        BOAT: { type: 'string' },
-                        BRIDGE: { type: 'string' },
-                        BUILDING: { type: 'string' },
-                        BUSHES: { type: 'string' },
-                        CABIN: { type: 'string' },
-                        CACTUS: { type: 'string' },
-                        CIRCLE_FRAME: { type: 'string' },
-                        CIRRUS: { type: 'string' },
-                        CLIFF: { type: 'string' },
-                        CLOUDS: { type: 'string' },
-                        CONIFER: { type: 'string' },
-                        CUMULUS: { type: 'string' },
-                        DECIDUOUS: { type: 'string' },
-                        DIANE_ANDRE: { type: 'string' },
-                        DOCK: { type: 'string' },
-                        DOUBLE_OVAL_FRAME: { type: 'string' },
-                        FARM: { type: 'string' },
-                        FENCE: { type: 'string' },
-                        FIRE: { type: 'string' },
-                        FLORIDA_FRAME: { type: 'string' },
-                        FLOWERS: { type: 'string' },
-                        FOG: { type: 'string' },
-                        FRAMED: { type: 'string' },
-                        GRASS: { type: 'string' },
-                        GUEST: { type: 'string' },
-                        HALF_CIRCLE_FRAME: { type: 'string' },
-                        HALF_OVAL_FRAME: { type: 'string' },
-                        HILLS: { type: 'string' },
-                        LAKE: { type: 'string' },
-                        LAKES: { type: 'string' },
-                        LIGHTHOUSE: { type: 'string' },
-                        MILL: { type: 'string' },
-                        MOON: { type: 'string' },
-                        MOUNTAIN: { type: 'string' },
-                        MOUNTAINS: { type: 'string' },
-                        NIGHT: { type: 'string' },
-                        OCEAN: { type: 'string' },
-                        OVAL_FRAME: { type: 'string' },
-                        PALM_TREES: { type: 'string' },
-                        PATH: { type: 'string' },
-                        PERSON: { type: 'string' },
-                        PORTRAIT: { type: 'string' },
-                        RECTANGLE_3D_FRAME: { type: 'string' },
-                        RECTANGULAR_FRAME: { type: 'string' },
-                        RIVER: { type: 'string' },
-                        ROCKS: { type: 'string' },
-                        SEASHELL_FRAME: { type: 'string' },
-                        SNOW: { type: 'string' },
-                        SNOWY_MOUNTAIN: { type: 'string' },
-                        SPLIT_FRAME: { type: 'string' },
-                        STEVE_ROSS: { type: 'string' },
-                        STRUCTURE: { type: 'string' },
-                        SUN: { type: 'string' },
-                        TOMB_FRAME: { type: 'string' },
-                        TREE: { type: 'string' },
-                        TREES: { type: 'string' },
-                        TRIPLE_FRAME: { type: 'string' },
-                        WATERFALL: { type: 'string' },
-                        WAVES: { type: 'string' },
-                        WINDMILL: { type: 'string' },
-                        WINDOW_FRAME: { type: 'string' },
-                        WINTER: { type: 'string' },
-                        WOOD_FRAMED: { type: 'string' },
-                        Episode_TITLE: { type: 'string' },
-                        Month: { type: 'string' },
-                        Day: { type: 'string' },
-                        Year: { type: 'string' },
+                        APPLE_FRAME: { type: 'boolean' },
+                        AURORA_BOREALIS: { type: 'boolean' },
+                        BARN: { type: 'boolean' },
+                        BEACH: { type: 'boolean' },
+                        BOAT: { type: 'boolean' },
+                        BRIDGE: { type: 'boolean' },
+                        BUILDING: { type: 'boolean' },
+                        BUSHES: { type: 'boolean' },
+                        CABIN: { type: 'boolean' },
+                        CACTUS: { type: 'boolean' },
+                        CIRCLE_FRAME: { type: 'boolean' },
+                        CIRRUS: { type: 'boolean' },
+                        CLIFF: { type: 'boolean' },
+                        CLOUDS: { type: 'boolean' },
+                        CONIFER: { type: 'boolean' },
+                        CUMULUS: { type: 'boolean' },
+                        DECIDUOUS: { type: 'boolean' },
+                        DIANE_ANDRE: { type: 'boolean' },
+                        DOCK: { type: 'boolean' },
+                        DOUBLE_OVAL_FRAME: { type: 'boolean' },
+                        FARM: { type: 'boolean' },
+                        FENCE: { type: 'boolean' },
+                        FIRE: { type: 'boolean' },
+                        FLORIDA_FRAME: { type: 'boolean' },
+                        FLOWERS: { type: 'boolean' },
+                        FOG: { type: 'boolean' },
+                        FRAMED: { type: 'boolean' },
+                        GRASS: { type: 'boolean' },
+                        GUEST: { type: 'boolean' },
+                        HALF_CIRCLE_FRAME: { type: 'boolean' },
+                        HALF_OVAL_FRAME: { type: 'boolean' },
+                        HILLS: { type: 'boolean' },
+                        LAKE: { type: 'boolean' },
+                        LAKES: { type: 'boolean' },
+                        LIGHTHOUSE: { type: 'boolean' },
+                        MILL: { type: 'boolean' },
+                        MOON: { type: 'boolean' },
+                        MOUNTAIN: { type: 'boolean' },
+                        MOUNTAINS: { type: 'boolean' },
+                        NIGHT: { type: 'boolean' },
+                        OCEAN: { type: 'boolean' },
+                        OVAL_FRAME: { type: 'boolean' },
+                        PALM_TREES: { type: 'boolean' },
+                        PATH: { type: 'boolean' },
+                        PERSON: { type: 'boolean' },
+                        PORTRAIT: { type: 'boolean' },
+                        RECTANGLE_3D_FRAME: { type: 'boolean' },
+                        RECTANGULAR_FRAME: { type: 'boolean' },
+                        RIVER: { type: 'boolean' },
+                        ROCKS: { type: 'boolean' },
+                        SEASHELL_FRAME: { type: 'boolean' },
+                        SNOW: { type: 'boolean' },
+                        SNOWY_MOUNTAIN: { type: 'boolean' },
+                        SPLIT_FRAME: { type: 'boolean' },
+                        STEVE_ROSS: { type: 'boolean' },
+                        STRUCTURE: { type: 'boolean' },
+                        SUN: { type: 'boolean' },
+                        TOMB_FRAME: { type: 'boolean' },
+                        TREE: { type: 'boolean' },
+                        TREES: { type: 'boolean' },
+                        TRIPLE_FRAME: { type: 'boolean' },
+                        WATERFALL: { type: 'boolean' },
+                        WAVES: { type: 'boolean' },
+                        WINDMILL: { type: 'boolean' },
+                        WINDOW_FRAME: { type: 'boolean' },
+                        WINTER: { type: 'boolean' },
+                        WOOD_FRAMED: { type: 'boolean' },
+                        episodeTitle: { type: 'string' },
+                        month: { type: 'string' },
+                        day: { type: 'number' },
+                        year: { type: 'number' },
                     },
                 },
             },
@@ -213,8 +213,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
  */
 app.get('/airdates', async (req, res) => {
     try {
-        const paintings = await Painting.find();
-        logger.info('Fetched paintings');
+        const paintings = await Painting.find({});
+        logger.info('Fetched all paintings');
         res.json(paintings);
     } catch (error) {
         logger.error('Error fetching data:', error.message);
@@ -227,45 +227,45 @@ app.get('/airdates', async (req, res) => {
  * /paintings/{id}:
  *   get:
  *     summary: Get a painting by ID
- *     description: Retrieve a single painting by its ID. If the painting is not found, a 404 error is returned. Ensure the ID is valid and correctly formatted.
+ *     description: Retrieve a specific painting by its ID. This endpoint returns a single painting object.
  *     parameters:
- *       - name: id
- *         in: path
+ *       - in: path
+ *         name: id
  *         required: true
- *         description: The unique identifier of the painting to retrieve.
+ *         description: The ID of the painting to retrieve.
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: The painting details.
+ *         description: A painting object.
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Painting'
  *       404:
- *         description: Painting not found. The ID provided does not match any painting in the database.
- *       400:
- *         description: Invalid ID format. The provided ID does not conform to expected format.
+ *         description: Painting not found.
  *       500:
- *         description: Server error occurred while fetching the painting.
+ *         description: Server error occurred while fetching data.
  */
 app.get('/paintings/:id', async (req, res) => {
     try {
         const painting = await Painting.findById(req.params.id);
         if (!painting) {
-            res.status(404).json({ message: 'Painting not found' });
-        } else {
-            res.json(painting);
+            return res.status(404).json({ message: 'Painting not found' });
         }
+        logger.info(`Fetched painting with ID: ${req.params.id}`);
+        res.json(painting);
     } catch (error) {
-        logger.error('Error fetching painting:', error.message);
-        res.status(500).json({ message: 'Error fetching painting', error });
+        logger.error('Error fetching data:', error.message);
+        res.status(500).json({ message: 'Error fetching data', error });
     }
 });
 
+// Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    logger.info(`Server running on port ${PORT}`);
+    logger.info(`Server is running on port ${PORT}`);
 });
+
 
 module.exports = app;
