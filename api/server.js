@@ -5,7 +5,6 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const Painting = require('./models/Painting');
 const swaggerJsdoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
 const winston = require('winston');
 
 // Logger setup
@@ -70,7 +69,7 @@ const swaggerOptions = {
         },
         servers: [
             {
-                url: 'mongodb://localhost:27017',
+                url: 'http://localhost:5000',
             },
         ],
         components: {
@@ -189,7 +188,12 @@ const swaggerOptions = {
 };
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+// Serving Swagger docs as JSON
+app.get('/swagger.json', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.json(swaggerDocs);
+});
 
 // Define routes
 
@@ -266,6 +270,5 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     logger.info(`Server is running on port ${PORT}`);
 });
-
 
 module.exports = app;
