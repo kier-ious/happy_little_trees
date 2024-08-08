@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import CarouselComponent from './CarouselComponent';
+import axios from 'axios';
 import './wheelMenu.css';
 import './colorWheel.css';
 
@@ -26,6 +28,10 @@ const colors = [
 const ColorWheel = () => {
   const [colorName, setColorName] = useState('');
   const [position, setPosition] = useState({ top: 0, left: 0 });
+  const [selectedColors, setSelectedColors] = useState([]);
+  const [paintings, setPaintings] = useState([]);
+  const [loading, setLoading] = useState();
+  const [error, setError] = useState();
 
   const handleMouseEnter = (event, name) => {
     const wheelContainer = document.getElementById('wheel-container');
@@ -41,27 +47,55 @@ const ColorWheel = () => {
     setColorName('');
   };
 
+  const handleColorClick = (color) => {
+    setSelectedColors((prevSelectedColors) => {
+      const isAlreadySelected = prevSelectedColors.includes(color);
+      return isAlreadySelected
+        ? prevSelectedColors.filter(c => c !== color)
+        : [...prevSelectedColors, color];
+    });
+  };
+
+  var filteredPaintings = paintings.filter(painting =>
+    selectedColors.every(color => painting.colors[0].match(color))
+);
+console.log(filteredPaintings)
+
   useEffect(() => {
+    axios.get('http://localhost:5000/airdates')
+        .then(response => {
+            setPaintings(response.data);
+            setLoading(false);
+        })
+        .catch(error => {
+            setError(error);
+            setLoading(false);
+        });
+
+        
+
     window.$(".wheel-button").wheelmenu({
-        trigger: "hover",
-        Animation: "fly",
-        AnimationSpeed: "fast",
-        angle: "all"
+      trigger: "hover",
+      Animation: "fly",
+      AnimationSpeed: "fast",
+      angle: "all"
     });
 
     window.$(".wheel .item").hover(function() {
-        var colorName = window.$(this).data("color");
-        var $colorNameDisplay = window.$("#color-name-display");
+      const colorName = window.$(this).data("color");
+      const $colorNameDisplay = window.$("#color-name-display");
 
-        $colorNameDisplay.text(colorName)
-            .show()
-            .css({
-                "top": window.$("#wheel-container").offset().top + window.$("#wheel-container").height() / 2 - $colorNameDisplay.height() / 2, // Center vertically relative to the wheel
-                "left": window.$("#wheel-container").offset().left + window.$("#wheel-container").width() + 20 // Fixed position to the right of the wheel container
-            });
+      $colorNameDisplay.text(colorName)
+        .show()
+        .css({
+          "top": window.$("#wheel-container").offset().top + window.$("#wheel-container").height() / 2 - $colorNameDisplay.height() / 2,
+          "left": window.$("#wheel-container").offset().left + window.$("#wheel-container").width() + 20
+        });
     }, function() {
-        window.$("#color-name-display").hide();
+      window.$("#color-name-display").hide();
     });
+
+    
   }, []);
 
   return (
@@ -79,8 +113,12 @@ const ColorWheel = () => {
               data-color={color.name}
               onMouseEnter={(event) => handleMouseEnter(event, color.name)}
               onMouseLeave={handleMouseLeave}
+              onClick={() => handleColorClick(color.name)}
+              style={{
+                border: selectedColors.includes(color.name) ? '2px solid red' : 'none'
+              }}
             >
-              <a href="">
+              <a href="#">
                 <img src={color.img} alt={color.name} />
               </a>
             </li>
@@ -98,6 +136,8 @@ const ColorWheel = () => {
           {colorName}
         </div>
       </div>
+      {/* Pass the selectedColors state to AirdateComponent */}
+      {filteredPaintings != null? <CarouselComponent paintings={filteredPaintings} /> : <div/>}
     </div>
   );
 };

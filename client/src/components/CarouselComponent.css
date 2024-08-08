@@ -1,0 +1,18 @@
+.carousel {
+    position: fixed;
+    bottom: 20px;
+    left: 800px;
+    width: 300px; /* Adjust the width to your preference */
+    height: auto;
+}
+
+.carousel-item img {
+    max-width: 100%;
+    max-height: 200px; /* Adjust the height to your preference */
+    object-fit: cover;
+}
+
+.carousel-caption h3,
+.carousel-caption p {
+    font-size: 14px; /* Adjust the text size to fit the smaller carousel */
+}
